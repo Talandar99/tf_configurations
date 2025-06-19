@@ -27,7 +27,7 @@ provider "linode" {
 }
 
 resource "linode_instance" "web" {
-  label            = "linode_arch_eu-central_nanode-1cpu-1ram_terraform"
+  label            = "arch_eu-central_nanode-1cpu-1ram_terraform"
   group            = "Terraform"
   image            = "linode/arch"
   region           = "eu-central"
