@@ -27,7 +27,7 @@ provider "linode" {
 }
 
 resource "linode_instance" "web" {
-  label            = "arch-eu-central-terraform-test"
+  label            = "linode_arch_eu-central_nanode-1cpu-1ram_terraform"
   group            = "Terraform"
   image            = "linode/arch"
   region           = "eu-central"
@@ -48,6 +48,7 @@ resource "linode_instance" "web" {
       "sudo pacman -Sy archlinux-keyring --noconfirm",
       "sudo pacman -Syu git docker docker-compose neovim zip wget tmux --noconfirm",
       "sudo systemctl enable docker.service",
+      "git clone https://github.com/Talandar99/shellfish.git",
       "sudo reboot",
     ]
   }
