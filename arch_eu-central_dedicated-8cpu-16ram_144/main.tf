@@ -27,7 +27,7 @@ provider "linode" {
 }
 
 resource "linode_instance" "web" {
-  label            = "arch_eu-central_dedicated-8cpu-16ram_terraform"
+  label            = "arch_eu-central_dedicated-8cpu-16ram_tf"
   group            = "Terraform"
   image            = "linode/arch"
   region           = "eu-central"
