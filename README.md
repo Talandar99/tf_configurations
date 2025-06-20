@@ -10,7 +10,7 @@ linode_token   = ""
 ssh_username   = ""
 root_password  = ""
 ```
-## Using OpenTofu
+## Using OpenTofu/terraform
 i recomend adding alias to .bashrc
 ```bash
 alias tf=tofu
