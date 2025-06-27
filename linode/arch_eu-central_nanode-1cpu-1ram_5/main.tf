@@ -45,6 +45,7 @@ resource "linode_instance" "web" {
 
   provisioner "remote-exec" {
     inline = [
+      "rm -rf /usr/lib/firmware/nvidia", # no idea why they have this garbage
       "sudo pacman -Sy archlinux-keyring --noconfirm",
       "sudo pacman -Syu git docker docker-compose neovim zip wget tmux --noconfirm",
       "sudo systemctl enable docker.service",
