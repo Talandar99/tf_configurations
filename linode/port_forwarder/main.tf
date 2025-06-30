@@ -27,7 +27,7 @@ provider "linode" {
 }
 
 resource "linode_instance" "web" {
-  label            = "ssh_port_forwarding_tf"
+  label            = "port_forwarder"
   group            = "Terraform"
   image            = "linode/arch"
   region           = "eu-central"
@@ -48,13 +48,23 @@ resource "linode_instance" "web" {
       # no idea why they have this garbage
       "rm -rf /usr/lib/firmware/nvidia", 
       "sudo pacman -Sy archlinux-keyring --noconfirm",
-      "sudo pacman -Syu git docker docker-compose neovim zip wget tmux --noconfirm",
+      "sudo pacman -Syu git docker docker-compose neovim zip wget tmux go make --noconfirm",
       "sudo systemctl enable docker.service",
       "git clone https://github.com/Talandar99/shellfish.git",
       # updating settings for port forwarding
       "echo 'GatewayPorts yes' >> /etc/ssh/sshd_config",
       "echo 'AllowTcpForwarding yes' >> /etc/ssh/sshd_config",
       "systemctl restart sshd",
+      # installing frp
+      "git clone https://github.com/fatedier/frp.git",
+      "cd frp && make",
+      "sudo install -m755 ./bin/frps /usr/local/bin/",
+      "sudo install -m755 ./bin/frpc /usr/local/bin/",
+      "cd ..",
+      # creating basic server configuration
+      "echo '[common]' > frps.toml",
+      "echo 'bind_port = 7000' >> frps.toml",
+      "echo 'bind_udp_port = 34197' >> frps.toml",
       # show ip
       "echo IP---------------------------IP",
       "ip a | grep inet",

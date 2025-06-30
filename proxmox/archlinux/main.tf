@@ -100,7 +100,7 @@ resource "null_resource" "setup" {
       "lxc-attach -n ${var.vmid} -- pacman-key --init",
       "lxc-attach -n ${var.vmid} -- pacman-key --populate archlinux",
       "lxc-attach -n ${var.vmid} -- pacman -Sy --noconfirm archlinux-keyring",
-      "lxc-attach -n ${var.vmid} -- pacman -Sy git docker docker-compose neovim zip wget tmux python python-requests --noconfirm",
+      "lxc-attach -n ${var.vmid} -- pacman -Sy git docker docker-compose neovim zip wget tmux python python-requests go make --noconfirm",
       "lxc-attach -n ${var.vmid} -- systemctl enable docker.service",
       "lxc-attach -n ${var.vmid} -- systemctl enable sshd",
       "lxc-attach -n ${var.vmid} -- echo 'PermitRootLogin yes' | lxc-attach -n 661 -- tee -a /etc/ssh/sshd_config > /dev/null",
