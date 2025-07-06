@@ -50,6 +50,11 @@ resource "linode_instance" "web" {
       "sudo pacman -Syu git docker docker-compose neovim zip wget tmux --noconfirm",
       "sudo systemctl enable docker.service",
       "git clone https://github.com/Talandar99/shellfish.git",
+      # show ip
+      "echo IP---------------------------IP",
+      "ip a | grep inet",
+      "echo IP---------------------------IP",
+      "sudo reboot",
       "sudo reboot",
     ]
   }
