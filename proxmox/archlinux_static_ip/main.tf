@@ -4,13 +4,18 @@ variable "archlinux_image"{
   type = string
   default = "archlinux-base_20240911-1_amd64.tar.zst"
 }
+variable "archlinux_ip" {
+  type    = string
+  default = "192.168.1.66/24"
+}
+
 variable "ssh_username" {
   type    = string
   default = "root"
 }
 variable "vmid" {
   type      = number
-  default = 661  # unique container ID
+  default = 667  # unique container ID
 }
 variable "ssh_password" {
   type      = string
@@ -50,13 +55,14 @@ resource "proxmox_lxc" "archlinux" {
   vmid         =  var.vmid
   ostemplate   = "local:vztmpl/${var.archlinux_image}" 
 
-  cores        = 6
+  cores        = 2
+  #cores        = 8
   #memory       = 512
-  #memory       = 1024
+  memory       = 1024
   #memory       = 2048
   #memory       = 4096
   #memory       = 8192
-  memory       = 10240
+  #memory       = 10240
   #memory       = 16384
   swap         = 512
 
@@ -73,13 +79,14 @@ resource "proxmox_lxc" "archlinux" {
 
   rootfs {
     storage  = "local-lvm"
-    size     = "20G"
+    size     = "200G"
   }
 
   network {
     name   = "eth0"
     bridge = "vmbr0"
-    ip     = "dhcp"
+    ip     = var.archlinux_ip
+    gw     = "192.168.1.1"    
   }
 
 }
