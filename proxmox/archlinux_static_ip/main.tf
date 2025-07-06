@@ -50,7 +50,7 @@ provider "proxmox" {
 }
 # resource
 resource "proxmox_lxc" "archlinux" {
-  hostname     = "proxmox-archlinux-tf-${var.vmid}"
+  hostname     = "proxmox-archlinux-tf-static-${var.vmid}"
   target_node  = "proxmox"
   vmid         =  var.vmid
   ostemplate   = "local:vztmpl/${var.archlinux_image}" 
