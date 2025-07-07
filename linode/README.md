@@ -5,10 +5,12 @@ I recomend try it out. It's mostly drop in replacement
 ## Secrets setup
 in project root create file `secrets.auto.tfvars`
 with this content:
-```go
-linode_token   = ""
+```hcl
+linode_token   = "" # your linode token
 ssh_username   = ""
 root_password  = ""
+cloudflare_domain = "" # your domain something like xyz.dev
+cloudflare_api_token = "" # your api token
 ```
 ## Using OpenTofu/terraform
 i recomend adding alias to .bashrc

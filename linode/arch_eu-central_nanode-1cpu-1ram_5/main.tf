@@ -1,34 +1,33 @@
 variable "linode_token" {
-  type        = string
-  sensitive   = true
+  type      = string
+  sensitive = true
 }
 
 variable "ssh_username" {
-  type        = string
-  sensitive   = true
+  type      = string
+  sensitive = true
 }
 
 variable "root_password" {
-  type        = string
-  sensitive   = true
+  type      = string
+  sensitive = true
 }
 
 terraform {
   required_providers {
     linode = {
-      source = "linode/linode"
+      source  = "linode/linode"
       version = "2.5.2"
     }
   }
 }
 
 provider "linode" {
-        token = var.linode_token
+  token = var.linode_token
 }
 
 resource "linode_instance" "web" {
   label            = "arch_eu-central_nanode-1cpu-1ram_tf"
-  group            = "Terraform"
   image            = "linode/arch"
   region           = "eu-central"
   type             = "g6-nanode-1"
@@ -37,10 +36,10 @@ resource "linode_instance" "web" {
   private_ip       = false
 
   connection {
-    type        = "ssh"
-    user        = "root" 
-    password    = var.root_password
-    host        = self.ip_address
+    type     = "ssh"
+    user     = "root"
+    password = var.root_password
+    host     = self.ip_address
   }
 
   provisioner "remote-exec" {
