@@ -66,7 +66,7 @@ resource "linode_instance" "web" {
       "echo 'bind_udp_port = 34197' >> frps.toml",
       # show ip
       "echo IP---------------------------IP",
-      "ip a | grep inet",
+      "ip -br a",
       "echo IP---------------------------IP",
       "sudo reboot",
     ]

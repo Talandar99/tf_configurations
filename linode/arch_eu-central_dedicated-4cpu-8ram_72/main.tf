@@ -54,7 +54,6 @@ resource "linode_instance" "web" {
       "ip a | grep inet",
       "echo IP---------------------------IP",
       "sudo reboot",
-      "sudo reboot",
     ]
   }
 }

@@ -1,6 +1,10 @@
-variable "factorio_save_location" {
+variable "shellfish_repo_minecraft_version" {
   type    = string
-  default = "/home/talandar/backups/factorio/factorio_m_15.tar.xz"
+  default = "vanilla_1.21.7"
+}
+variable "minecraft_data_location" {
+  type    = string
+  default = "/home/talandar/backups/minecraft/data_maria_miasto_02.tar.xz"
 }
 
 variable "linode_token" {
@@ -52,7 +56,7 @@ provider "cloudflare" {
 }
 
 resource "linode_instance" "web" {
-  label            = "factorio_server"
+  label            = "minecraft_server"
   image            = "linode/arch"
   region           = "eu-central"
   type             = "g6-dedicated-4"
@@ -69,8 +73,8 @@ resource "linode_instance" "web" {
   }
 
   provisioner "file" {
-    source      = var.factorio_save_location
-    destination = "/root/save.tar.xz"
+    source      = var.minecraft_data_location
+    destination = "/root/data.tar.xz"
   }
 
 
@@ -82,9 +86,9 @@ resource "linode_instance" "web" {
       "sudo systemctl enable docker.service",
       "sudo systemctl start docker.service",
       "git clone https://github.com/Talandar99/shellfish.git",
-      "cd shellfish/docker_containers/factorio_server/",
-      "cp /root/save.tar.xz .",
-      "tar xvJf save.tar.xz",
+      "cd shellfish/docker_containers/minecraft_server/${var.shellfish_repo_minecraft_version}",
+      "cp /root/data.tar.xz .",
+      "tar xvJf data.tar.xz",
       "docker compose up -d",
       # show ip
       "echo IP---------------------------IP",
@@ -100,9 +104,9 @@ data "cloudflare_zone" "myzone" {
   name = var.cloudflare_domain
 }
 
-resource "cloudflare_record" "factorio" {
+resource "cloudflare_record" "minecraft" {
   zone_id = data.cloudflare_zone.myzone.id
-  name    = "factorio"
+  name    = "minecraft"
   value   = linode_instance.web.ip_address
   type    = "A"
   ttl     = 300
