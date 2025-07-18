@@ -7,10 +7,11 @@ in project root create file `secrets.auto.tfvars`
 with this content:
 ```hcl
 linode_token   = "" # your linode token
-ssh_username   = ""
-root_password  = ""
+ssh_username   = "" # your linode ssh username
+root_password  = "" # generate save password for linode server
 cloudflare_domain = "" # your domain something like xyz.dev
-cloudflare_api_token = "" # your api token
+cloudflare_api_token = "" # your api token for cloudflare
+
 ```
 ## Using OpenTofu/terraform
 i recomend adding alias to .bashrc
