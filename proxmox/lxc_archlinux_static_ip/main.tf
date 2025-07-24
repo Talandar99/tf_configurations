@@ -1,12 +1,12 @@
 # variables
 
-variable "archlinux_image"{
-  type = string
+variable "archlinux_image" {
+  type    = string
   default = "archlinux-base_20240911-1_amd64.tar.zst"
 }
 variable "archlinux_ip" {
   type    = string
-  default = "192.168.1.66/24"
+  default = "192.168.1.60/24"
 }
 
 variable "ssh_username" {
@@ -14,8 +14,8 @@ variable "ssh_username" {
   default = "root"
 }
 variable "vmid" {
-  type      = number
-  default = 667  # unique container ID
+  type    = number
+  default = 667 # unique container ID
 }
 variable "ssh_password" {
   type      = string
@@ -36,7 +36,7 @@ variable "pm_address" {
 terraform {
   required_providers {
     proxmox = {
-      source = "Telmate/proxmox"
+      source  = "Telmate/proxmox"
       version = "3.0.2-rc01"
     }
   }
@@ -50,43 +50,43 @@ provider "proxmox" {
 }
 # resource
 resource "proxmox_lxc" "archlinux" {
-  hostname     = "proxmox-archlinux-tf-static-${var.vmid}"
-  target_node  = "proxmox"
-  vmid         =  var.vmid
-  ostemplate   = "local:vztmpl/${var.archlinux_image}" 
+  hostname    = "proxmox-archlinux-tf-static-${var.vmid}"
+  target_node = "proxmox"
+  vmid        = var.vmid
+  ostemplate  = "local:vztmpl/${var.archlinux_image}"
 
-  cores        = 2
+  cores = 2
   #cores        = 8
   #memory       = 512
-  memory       = 1024
+  memory = 1024
   #memory       = 2048
   #memory       = 4096
   #memory       = 8192
   #memory       = 10240
   #memory       = 16384
-  swap         = 512
+  swap = 512
 
   features {
     nesting = true
   }
 
-  cmode         = "tty"
-  tty           = 1
-  unprivileged  = true
-  password      = var.ssh_password 
-  console       = true
-  start         = true
+  cmode        = "tty"
+  tty          = 1
+  unprivileged = true
+  password     = var.ssh_password
+  console      = true
+  start        = true
 
   rootfs {
-    storage  = "local-lvm"
-    size     = "200G"
+    storage = "local-lvm"
+    size    = "200G"
   }
 
   network {
     name   = "eth0"
     bridge = "vmbr0"
     ip     = var.archlinux_ip
-    gw     = "192.168.1.1"    
+    gw     = "192.168.1.1"
   }
 
 }
@@ -114,7 +114,7 @@ resource "null_resource" "setup" {
       "lxc-attach -n ${var.vmid} -- echo 'PasswordAuthentication yes' | lxc-attach -n ${var.vmid} -- tee -a /etc/ssh/sshd_config > /dev/null",
       "lxc-attach -n ${var.vmid} -- git clone https://github.com/Talandar99/shellfish.git",
       "echo IP---------------------------IP",
-      "lxc-attach -n ${var.vmid} -- ip a | grep inet",
+      "lxc-attach -n ${var.vmid} -- ip -br a",
       "echo IP---------------------------IP",
       "lxc-attach -n ${var.vmid} -- reboot",
     ]

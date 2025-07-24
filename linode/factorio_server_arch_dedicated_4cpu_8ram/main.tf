@@ -1,6 +1,6 @@
 variable "factorio_save_location" {
   type    = string
-  default = "/home/talandar/backups/factorio/factorio_m_15.tar.xz"
+  default = "/home/talandar/backups/factorio/factorio_m_mods_04.tar.xz"
 }
 
 variable "linode_token" {
