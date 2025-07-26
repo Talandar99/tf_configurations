@@ -93,7 +93,7 @@ resource "proxmox_vm_qemu" "vms" {
     inline = [
       "apt update -y",
       "apt upgrade -y",
-      "apt install git tar zip unzip",
+      "apt install git tar zip unzip -y",
       "git clone https://github.com/Talandar99/shellfish.git"
     ]
 
