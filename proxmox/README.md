@@ -2,21 +2,27 @@
 open tofu is fork of terraform, created as a response to hashicorp license change.
 I recomend try it out. It's mostly drop in replacement
 [link](https://opentofu.org/)
-## Secrets setup
+## Secrets setup (secrets file)
 in project root create file `secrets.auto.tfvars`
-with this content:
-```go
+with this content (change text in quotes):
+```terraform
 pm_address                  = "proxmox_ip_address"
 ssh_password                = "ssh_password"
 pm_password                 = "proxmox_safe_password"
 ```
-## Using OpenTofu/terraform
-i recomend adding alias to .bashrc
+## Linking secrets 
+secrets symlink should already exist, but in case you need to create it this is how you do it:
+```bash
+cd selected_configuration_directory_name
+ln -s ../secrets.auto.tfvars
+```
+## adding alias to .bashrc (optional)
 ```bash
 alias tf=tofu
 #or for terraform
 alias tf=terraform
 ```
+## Using OpenTofu/terraform (with alias)
 ```bash
 tf init    
 # apply configuration
@@ -24,12 +30,8 @@ tf apply
 # destroy configuration
 tf destroy
 ```
-## Linking secrets
-```bash
-cd selected_configuration_directory_name
-ln -s ../secrets.auto.tfvars
-```
 ## Creating VM template
+You need VM template for creating vm's with terraform, configruation that are based on vm starts with vm_
 ### Create VM 
 1. Create VM button 
 2. General
@@ -42,7 +44,7 @@ ln -s ../secrets.auto.tfvars
  - Type: Linux
  - Kernel: leave default
 4. System
- - Qemu Agent [X]
+ - Qemu Agent = true
  - Leave rest
 5. Disks
  - does not matter but give at least 10GB

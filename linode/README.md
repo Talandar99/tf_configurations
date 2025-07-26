@@ -32,6 +32,7 @@ tf destroy
 ```
 ## Usefull commands
 ### Linking secrets
+secrets symlink should already exist, but in case you need to create it this is how you do it:
 ```bash
 cd selected_configuration_directory_name
 ln -s ../secrets.auto.tfvars
