@@ -1,7 +1,7 @@
 # variables
 
-variable "archlinux_image"{
-  type = string
+variable "archlinux_image" {
+  type    = string
   default = "archlinux-base_20240911-1_amd64.tar.zst"
 }
 variable "ssh_username" {
@@ -9,8 +9,8 @@ variable "ssh_username" {
   default = "root"
 }
 variable "vmid" {
-  type      = number
-  default = 661  # unique container ID
+  type    = number
+  default = 661 # unique container ID
 }
 variable "ssh_password" {
   type      = string
@@ -31,7 +31,7 @@ variable "pm_address" {
 terraform {
   required_providers {
     proxmox = {
-      source = "Telmate/proxmox"
+      source  = "Telmate/proxmox"
       version = "3.0.2-rc01"
     }
   }
@@ -45,35 +45,35 @@ provider "proxmox" {
 }
 # resource
 resource "proxmox_lxc" "archlinux" {
-  hostname     = "proxmox-archlinux-tf-${var.vmid}"
-  target_node  = "proxmox"
-  vmid         =  var.vmid
-  ostemplate   = "local:vztmpl/${var.archlinux_image}" 
+  hostname    = "proxmox-archlinux-tf-${var.vmid}"
+  target_node = "proxmox"
+  vmid        = var.vmid
+  ostemplate  = "local:vztmpl/${var.archlinux_image}"
 
-  cores        = 6
+  cores = 6
   #memory       = 512
   #memory       = 1024
   #memory       = 2048
   #memory       = 4096
   #memory       = 8192
-  memory       = 10240
+  memory = 10240
   #memory       = 16384
-  swap         = 512
+  swap = 512
 
   features {
     nesting = true
   }
 
-  cmode         = "tty"
-  tty           = 1
-  unprivileged  = true
-  password      = var.ssh_password 
-  console       = true
-  start         = true
+  cmode        = "tty"
+  tty          = 1
+  unprivileged = true
+  password     = var.ssh_password
+  console      = true
+  start        = true
 
   rootfs {
-    storage  = "local-lvm"
-    size     = "20G"
+    storage = "local-lvm"
+    size    = "20G"
   }
 
   network {

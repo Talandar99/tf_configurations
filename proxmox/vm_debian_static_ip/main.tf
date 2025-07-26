@@ -8,8 +8,8 @@ variable "instances" {
   }))
   default = {
     "node1" = {
-      ip   = "192.168.1.71/24"
-      vmid = 671
+      ip   = "192.168.1.70/24"
+      vmid = 670
     }
   }
 }
