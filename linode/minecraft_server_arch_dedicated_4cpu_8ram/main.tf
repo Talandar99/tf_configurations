@@ -4,7 +4,7 @@ variable "shellfish_repo_minecraft_version" {
 }
 variable "minecraft_data_location" {
   type    = string
-  default = "/home/talandar/backups/minecraft/data_miasto_3.tar.xz"
+  default = "/home/talandar/backups/minecraft/data_miasto_11.tar.xz"
 }
 
 variable "linode_token" {

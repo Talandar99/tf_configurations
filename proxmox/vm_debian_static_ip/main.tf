@@ -80,7 +80,6 @@ resource "proxmox_vm_qemu" "vms" {
   disk {
     type    = "cloudinit"
     storage = "local-lvm"
-    size    = "512M"
     slot    = "ide2"
   }
   network {
@@ -93,7 +92,7 @@ resource "proxmox_vm_qemu" "vms" {
     inline = [
       "apt update -y",
       "apt upgrade -y",
-      "apt install git tar zip unzip -y",
+      "apt install iptables git tar zip unzip -y",
       "git clone https://github.com/Talandar99/shellfish.git"
     ]
 
