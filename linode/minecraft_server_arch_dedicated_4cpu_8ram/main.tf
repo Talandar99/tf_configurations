@@ -72,10 +72,10 @@ resource "linode_instance" "web" {
 
   }
 
-  provisioner "file" {
-    source      = var.minecraft_data_location
-    destination = "/root/data.tar.xz"
-  }
+  #provisioner "file" {
+  #  source      = var.minecraft_data_location
+  #  destination = "/root/data.tar.xz"
+  #}
 
 
   provisioner "remote-exec" {
@@ -86,10 +86,10 @@ resource "linode_instance" "web" {
       "sudo systemctl enable docker.service",
       "sudo systemctl start docker.service",
       "git clone https://github.com/Talandar99/shellfish.git",
-      "cd shellfish/docker_containers/minecraft_server/${var.shellfish_repo_minecraft_version}",
-      "cp /root/data.tar.xz .",
-      "tar xvJf data.tar.xz",
-      "docker compose up -d",
+      #"cd shellfish/docker_containers/minecraft_server/${var.shellfish_repo_minecraft_version}",
+      #"cp /root/data.tar.xz .",
+      #"tar xvJf data.tar.xz",
+      #"docker compose up -d",
       # show ip
       "echo IP---------------------------IP",
       "ip -br a",
