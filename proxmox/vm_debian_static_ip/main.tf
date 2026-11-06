@@ -58,10 +58,10 @@ resource "proxmox_vm_qemu" "vms" {
   clone       = "debian-12-template"
 
   cpu {
-    cores = 2
+    cores = 4
   }
 
-  memory    = 2048
+  memory    = 4092
   agent     = 1
   skip_ipv6 = true
 
@@ -73,7 +73,7 @@ resource "proxmox_vm_qemu" "vms" {
 
   disk {
     type    = "disk"
-    size    = "10G"
+    size    = "100G"
     storage = "local-lvm"
     slot    = "scsi0"
   }

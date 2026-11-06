@@ -13,17 +13,35 @@ variable "root_password" {
   sensitive = true
 }
 
+variable "cloudflare_domain" {
+  type = string
+}
+
+variable "cloudflare_api_token" {
+  type      = string
+  sensitive = true
+}
+
 terraform {
   required_providers {
     linode = {
       source  = "linode/linode"
       version = "2.5.2"
     }
+
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 5.28"
+    }
   }
 }
 
 provider "linode" {
   token = var.linode_token
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
 }
 
 resource "linode_instance" "web" {
@@ -44,31 +62,46 @@ resource "linode_instance" "web" {
 
   provisioner "remote-exec" {
     inline = [
-      # no idea why they have this garbage
       "rm -rf /usr/lib/firmware/nvidia",
-      "sudo pacman -Sy archlinux-keyring --noconfirm",
-      "sudo pacman -Syu git docker docker-compose neovim zip wget tmux go make --noconfirm",
-      "sudo systemctl enable docker.service",
-      "git clone https://github.com/Talandar99/shellfish.git",
-      # updating settings for port forwarding
-      "echo 'GatewayPorts yes' >> /etc/ssh/sshd_config",
-      "echo 'AllowTcpForwarding yes' >> /etc/ssh/sshd_config",
-      "systemctl restart sshd",
-      # installing frp
-      "git clone https://github.com/fatedier/frp.git",
-      "cd frp && make",
-      "sudo install -m755 ./bin/frps /usr/local/bin/",
-      "sudo install -m755 ./bin/frpc /usr/local/bin/",
-      "cd ..",
-      # creating basic server configuration
-      "echo '[common]' > frps.toml",
-      "echo 'bind_port = 7000' >> frps.toml",
-      "echo 'bind_udp_port = 34197' >> frps.toml",
-      # show ip
+
+      "pacman -Sy archlinux-keyring --noconfirm",
+      "pacman -Syu git docker docker-compose neovim zip wget tmux --noconfirm",
+
+      "systemctl enable --now docker.service",
+
+      "git clone https://github.com/Talandar99/shellfish.git /root/shellfish",
+
+      "chmod +x /root/shellfish/scripts/install_frp.sh",
+      "bash /root/shellfish/scripts/install_frp.sh",
+
       "echo IP---------------------------IP",
       "ip -br a",
-      "echo IP---------------------------IP",
-      "sudo reboot",
+      "echo IP---------------------------IP"
     ]
   }
+}
+
+data "cloudflare_zones" "main" {
+  name   = var.cloudflare_domain
+  status = "active"
+}
+
+resource "cloudflare_dns_record" "forgejo" {
+  zone_id = data.cloudflare_zones.main.result[0].id
+
+  name    = "git.${var.cloudflare_domain}"
+  type    = "A"
+  content = linode_instance.web.ip_address
+  ttl     = 300
+  proxied = false
+}
+
+resource "cloudflare_dns_record" "minecraft" {
+  zone_id = data.cloudflare_zones.main.result[0].id
+
+  name    = "minecraft.${var.cloudflare_domain}"
+  type    = "A"
+  content = linode_instance.web.ip_address
+  ttl     = 300
+  proxied = false
 }

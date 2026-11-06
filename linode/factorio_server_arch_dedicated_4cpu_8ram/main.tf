@@ -1,6 +1,6 @@
 variable "factorio_save_location" {
   type    = string
-  default = "/home/talandar/backups/factorio/factorio_mat_02.tar.xz"
+  default = "/home/talandar/backups/factorio/factorio_se_01.tar.xz"
 }
 
 variable "linode_token" {
@@ -76,20 +76,20 @@ resource "linode_instance" "web" {
 
   provisioner "remote-exec" {
     inline = [
-      "rm -rf /usr/lib/firmware/nvidia", # no idea why they have this garbage
+      "rm -rf /usr/lib/firmware/nvidia",
       "sudo pacman -Sy archlinux-keyring --noconfirm",
-      "sudo pacman -Sy git docker docker-compose neovim zip wget tmux --noconfirm",
+      "sudo pacman -Syu --noconfirm",
+      "sudo pacman -S glibc git docker docker-compose neovim zip wget tmux --noconfirm ",
       "sudo systemctl enable docker.service",
       "sudo systemctl start docker.service",
       "git clone https://github.com/Talandar99/shellfish.git",
       "cd shellfish/docker_containers/factorio_server/",
       "cp /root/save.tar.xz .",
       "tar xvJf save.tar.xz",
-      "docker compose up -d",
-      # show ip
       "echo IP---------------------------IP",
       "ip -br a",
       "echo IP---------------------------IP",
+      "reboot"
     ]
   }
 
